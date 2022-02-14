@@ -1,7 +1,22 @@
-import '../styles/globals.css'
+import { CacheProvider } from '@emotion/react'
+import { ThemeProvider, CssBaseline } from '@mui/material'
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+import createEmotionCache from '../lib/createEmotionCache'
+import lightTheme from '../themes/lightTheme'
+import darkTheme from '../themes/darkTheme'
+
+const clientSideCache = createEmotionCache()
+
+function MyApp(props) {
+  const { Component, emotionCache = clientSideCache, pageProps } = props;
+  return (
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={lightTheme}>
+        <CssBaseline/>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </CacheProvider>
+  )
 }
 
 export default MyApp
