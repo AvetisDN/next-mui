@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppContext from "./AppContext";
 
 const AppProvider = ({ children }) => {
-    let initialDarkMode = false;
+    const [darkMode, setDarkMode] = useState(false);
 
-    if (typeof window !== "undefined") {
-        initialDarkMode = localStorage.darkMode || false;
-    }
-
-    const [darkMode, setDarkMode] = useState(initialDarkMode);
     const toggleDarkMode = () => {
         localStorage.darkMode = !darkMode;
         setDarkMode(!darkMode);
+        console.log(darkMode);
     };
+
+    useEffect(() => {
+        setDarkMode(
+            localStorage.darkMode ? Boolean(localStorage.darkMode) : false
+        );
+    }, []);
+
     return (
         <AppContext.Provider value={{ darkMode, toggleDarkMode }}>
             {children}
